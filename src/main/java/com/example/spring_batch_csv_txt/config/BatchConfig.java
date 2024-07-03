@@ -1,5 +1,7 @@
 package com.example.spring_batch_csv_txt.config;
 
+import com.example.spring_batch_csv_txt.listner.CustomJobListner;
+import com.example.spring_batch_csv_txt.listner.StepListner;
 import com.example.spring_batch_csv_txt.model.MyCsvRecord;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -32,8 +34,9 @@ public class BatchConfig {
 
     @Bean
     public Job job() {
-        return jobBuilderFactory.get("job")
+        return jobBuilderFactory.get("myjob")
                 .incrementer(new RunIdIncrementer())
+                .listener(new CustomJobListner())
                 .start(step1())
                 .build();
     }
@@ -45,6 +48,7 @@ public class BatchConfig {
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())
+                .listener(new StepListner())
                 .build();
     }
 
